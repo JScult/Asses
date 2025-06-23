@@ -5,6 +5,7 @@ const Practice = () => {
   const [phrases, setPhrases] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showTranslation, setShowTranslation] = useState(false);
+  const [showStatus, setShowStatus] = useState(false);
 
   useEffect(() => {
     axios
@@ -24,6 +25,8 @@ const Practice = () => {
       })
       .then(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+        setShowTranslation(false);
+        setShowStatus(false);
       })
       .catch((error) => {
         console.error("Error updating phrase status:", error);
@@ -32,6 +35,10 @@ const Practice = () => {
 
   const toggleTranslation = () => {
     setShowTranslation((prevState) => !prevState);
+  };
+
+  const toggleStatus = () => {
+    setShowStatus((prevState) => !prevState);
   };
 
   const currentPhrase = phrases[currentIndex];
@@ -59,6 +66,12 @@ const Practice = () => {
           <button onClick={() => updateStatus("Not yet")}>Not yet</button>
           <button onClick={() => updateStatus("Almost")}>Almost</button>
           <button onClick={() => updateStatus("Got it")}>Got it</button>
+          <button className="status-button" onClick={toggleStatus}>
+            {showStatus ? "Hide Status" : "Show Status"}
+          </button>
+          {showStatus && (
+            <div className="card-status">Status: {currentPhrase.status}</div>
+          )}
         </div>
       )}
     </div>
