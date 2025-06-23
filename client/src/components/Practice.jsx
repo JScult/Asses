@@ -11,7 +11,14 @@ const Practice = () => {
     axios
       .get("http://localhost:3010/api/phrases")
       .then((response) => {
-        setPhrases(response.data);
+        const filteredPhrases = response.data.filter(
+          (phrase) => phrase.status !== "Got it"
+        );
+        const sortedPhrases = filteredPhrases.sort((a, b) => {
+          const statusOrder = { "Not yet": 0, "Almost": 1 };
+          return statusOrder[a.status] - statusOrder[b.status];
+        });
+        setPhrases(sortedPhrases);
       })
       .catch((error) => {
         console.error("Error fetching phrases:", error);
