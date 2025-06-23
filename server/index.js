@@ -24,6 +24,19 @@ app.get('/api/phrases', (req, res) => {
   });
 });
 
+app.put('/api/phrases/:id', (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  db.updatePhrase(id, status, (err) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 //TODO - add additional route handlers as necessary
 
 app.listen(PORT, () => {
