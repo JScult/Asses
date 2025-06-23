@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import $ from 'jquery';
 
 import Practice from './components/Practice.jsx';
@@ -49,4 +49,5 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+const root = ReactDOM.createRoot(document.getElementById('app'));
+root.render(<App />);
