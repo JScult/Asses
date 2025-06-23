@@ -5,6 +5,8 @@ const db = require('../database-mysql');
 
 const app = express();
 const PORT = 3010;
+const cors = require('cors');
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

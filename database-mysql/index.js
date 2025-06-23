@@ -12,8 +12,10 @@ const getAllPhrases = function(callback) {
   const query = 'SELECT * FROM phrases';
   connection.query(query, (err, results) => {
     if (err) {
+      console.error('Database query error:', err); // Log the error
       callback(err, null);
     } else {
+      // console.log('Database query results:', results); // Log the results
       callback(null, results);
     }
   });

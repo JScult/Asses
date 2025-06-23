@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import $ from 'jquery';
+import './App.css'
 
 import Practice from './components/Practice.jsx';
 import PhraseList from './components/PhraseList.jsx';
