@@ -6,14 +6,22 @@ const Practice = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showTranslation, setShowTranslation] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
+  const [progressPercentage, setProgressPercentage] = useState(0);
 
   useEffect(() => {
     axios
       .get("http://localhost:3010/api/phrases")
       .then((response) => {
-        const filteredPhrases = response.data.filter(
+        const allPhrases = response.data;
+        const filteredPhrases = allPhrases.filter(
           (phrase) => phrase.status !== "Got it"
         );
+        const gotItCount = allPhrases.filter(
+          (phrase) => phrase.status === "Got it"
+        ).length;
+        const percentage =
+          allPhrases.length > 0 ? (gotItCount / allPhrases.length) * 100 : 0;
+        setProgressPercentage(percentage);
         const sortedPhrases = filteredPhrases.sort((a, b) => {
           const statusOrder = { "Not yet": 0, "Almost": 1 };
           return statusOrder[a.status] - statusOrder[b.status];
@@ -81,6 +89,15 @@ const Practice = () => {
           )}
         </div>
       )}
+      <div className="progress-bar">
+        <div
+          className="progress-bar-fill"
+          style={{ width: `${progressPercentage}%` }}
+        ></div>
+        <div className="progress-bar-text">
+          {progressPercentage.toFixed(2)}%
+        </div>
+      </div>
     </div>
   );
 };
