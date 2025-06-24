@@ -20,16 +20,20 @@ app.get('/api/phrases', (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.json(phrases);
+      const sortedPhrases = phrases.sort((a, b) => new Date(a.next_review_date) - new Date(b.next_review_date));
+      res.json(sortedPhrases);
     }
   });
 });
 
 app.put('/api/phrases/:id', (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
+  const { status, quality } = req.body;
 
-  db.updatePhrase(id, status, (err) => {
+  const currentDate = new Date();
+  const nextReviewDate = db.calculateNextReviewDate(currentDate, quality);
+
+  db.updatePhraseWithReviewDate(id, status, nextReviewDate, (err) => {
     if (err) {
       res.status(500).send(err);
     } else {

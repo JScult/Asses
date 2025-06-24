@@ -77,9 +77,33 @@ const translate = async function(text, language) {
   }
 };
 
+const updatePhraseWithReviewDate = function(id, status, nextReviewDate, callback) {
+  const query = 'UPDATE phrases SET status = ?, next_review_date = ? WHERE id = ?';
+  connection.query(query, [status, nextReviewDate, id], (err) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null);
+    }
+  });
+};
+
+const calculateNextReviewDate = function(currentDate, quality) {
+  // SM2 algorithm logic
+  let interval = 1; // Default interval for first review
+  if (quality >= 3) {
+    interval = Math.pow(2, quality - 2); // Increase interval based on quality
+  }
+  const nextReviewDate = new Date(currentDate);
+  nextReviewDate.setDate(nextReviewDate.getDate() + interval);
+  return nextReviewDate;
+};
+
 module.exports = {
   getAllPhrases,
   updatePhrase,
   addPhrase,
   translate,
+  updatePhraseWithReviewDate,
+  calculateNextReviewDate,
 };
