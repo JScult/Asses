@@ -6,9 +6,9 @@ USE koreantutor;
 
 CREATE TABLE phrases (
   id int NOT NULL AUTO_INCREMENT,
-  kor varchar(255) CHARACTER SET utf8 NOT NULL,
-  eng varchar(255) NOT NULL,
-  rom varchar(255) NOT NULL,
+  kor varchar(255) CHARACTER SET utf8,
+  eng varchar(255) ,
+  rom varchar(255) ,
   status ENUM('Not yet', 'Almost', 'Got it') NOT NULL,
   PRIMARY KEY (id)
 );

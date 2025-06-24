@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const axios = require("axios");
 
 const db = require('../database-mysql');
 
@@ -33,6 +34,26 @@ app.put('/api/phrases/:id', (req, res) => {
       res.status(500).send(err);
     } else {
       res.sendStatus(200);
+    }
+  });
+});
+
+app.post("/api/phrases", (req, res) => {
+  const { kor, rom, eng } = req.body;
+
+  const newPhrase = {
+    kor: kor || null,
+    rom: rom || null,
+    eng: eng || null,
+    status: "Not yet",
+  };
+
+  db.addPhrase(newPhrase, (err, addedPhrase) => {
+    if (err) {
+      console.error("Error adding phrase to database:", err);
+      res.status(500).send(err);
+    } else {
+      res.status(201).json(addedPhrase);
     }
   });
 });
