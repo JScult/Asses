@@ -10,6 +10,7 @@ CREATE TABLE phrases (
   eng varchar(255) ,
   rom varchar(255) ,
   next_review_date DATETIME,
+  category VARCHAR(255),
   status ENUM('Not yet', 'Almost', 'Got it') NOT NULL,
   PRIMARY KEY (id)
 );
