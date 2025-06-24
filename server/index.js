@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-// UNCOMMENT TO START
+// UNCOMMENT TO START sdss
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.get('/api/phrases', (req, res) => {
