@@ -28,12 +28,9 @@ app.get('/api/phrases', (req, res) => {
 
 app.put('/api/phrases/:id', (req, res) => {
   const { id } = req.params;
-  const { status, quality } = req.body;
+  const fields = req.body;
 
-  const currentDate = new Date();
-  const nextReviewDate = db.calculateNextReviewDate(currentDate, quality);
-
-  db.updatePhraseWithReviewDate(id, status, nextReviewDate, (err) => {
+  db.updatePhrase(id, fields, (err) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -61,6 +58,19 @@ app.post("/api/phrases", (req, res) => {
     }
   });
 });
+
+app.get('/api/phrases/category/:category', (req, res) => {
+  const { category } = req.params;
+
+  db.getPhrasesByCategory(category, (err, phrases) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(phrases);
+    }
+  });
+});
+
 
 //TODO - add additional route handlers as necessary
 

@@ -22,17 +22,6 @@ const getAllPhrases = function(callback) {
   });
 };
 
-const updatePhrase = function(id, status, callback) {
-  const query = 'UPDATE phrases SET status = ? WHERE id = ?';
-  connection.query(query, [status, id], (err) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null);
-    }
-  });
-};
-
 const addPhrase = function(newPhrase, callback) {
   const query = 'INSERT INTO phrases (kor, rom, eng, status) VALUES (?, ?, ?, ?)';
   const values = [newPhrase.kor || null, newPhrase.rom || null, newPhrase.eng || null, newPhrase.status];
@@ -99,6 +88,42 @@ const calculateNextReviewDate = function(currentDate, quality) {
   return nextReviewDate;
 };
 
+const getPhrasesByCategory = function(category, callback) {
+  const query = 'SELECT * FROM phrases WHERE category = ?';
+  connection.query(query, [category], (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+const updatePhraseCategory = function(id, category, callback) {
+  const query = 'UPDATE phrases SET category = ? WHERE id = ?';
+  connection.query(query, [category, id], (err) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null);
+    }
+  });
+};
+
+const updatePhrase = function(id, fields, callback) {
+  const setClause = Object.keys(fields).map(field => `${field} = ?`).join(', ');
+  const values = [...Object.values(fields), id];
+  const query = `UPDATE phrases SET ${setClause} WHERE id = ?`;
+
+  connection.query(query, values, (err) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null);
+    }
+  });
+};
+
 module.exports = {
   getAllPhrases,
   updatePhrase,
@@ -106,4 +131,6 @@ module.exports = {
   translate,
   updatePhraseWithReviewDate,
   calculateNextReviewDate,
+  getPhrasesByCategory,
+  updatePhraseCategory,
 };

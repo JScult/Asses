@@ -20,7 +20,7 @@ const Practice = () => {
           (phrase) => phrase.status === "Got it"
         ).length;
         const percentage =
-          allPhrases.length > 0 ? (gotItCount / allPhrases.length) * 100 : 0;
+          allPhrases.length > 0 ? (gotItCount / allPhrases.length ) * 100 : 0;
         setProgressPercentage(percentage);
         const sortedPhrases = filteredPhrases.sort((a, b) => {
           const statusOrder = { "Not yet": 0, "Almost": 1 };
@@ -39,6 +39,12 @@ const Practice = () => {
         status: status,
       })
       .then(() => {
+        if (status === "Got it") {
+          setProgressPercentage((prevPercentage) => {
+            const newGotItCount =1+ (prevPercentage / 100) * phrases.length ;
+            return (newGotItCount / phrases.length) * 100;
+            });
+        }
         setCurrentIndex((prevIndex) => (prevIndex + 1) % phrases.length);
         setShowTranslation(false);
         setShowStatus(false);
